@@ -1,0 +1,45 @@
+{:paths ["src"]
+ ;; langgraph brings langchain transitively (both zero-/single-dep,
+ ;; all .cljc -> portable to JVM / SCI / ClojureScript / GraalVM). It lives
+ ;; in the kotoba-lang org of this workspace (transferred + renamed from
+ ;; com-junkawasaki/langgraph-clj / com-junkawasaki/langchain-clj). This
+ ;; repo is standalone (forkable outside the workspace); the :local/root
+ ;; paths only resolve inside the monorepo checkout — a standalone fork
+ ;; should override them with git coordinates.
+ :deps {io.github.kotoba-lang/langgraph
+        {:local/root "../../kotoba-lang/langgraph"}
+        io.github.kotoba-lang/robotics
+        {:local/root "../../kotoba-lang/robotics"}
+        ;; REAL engineering-simulation dependency (ADR-2607152000, extending
+        ;; ADR-2607151600's automotive pilot to this vertical): harnessworks.
+        ;; robotics actually calls physics-2d/world-step -- a real, tested
+        ;; time-stepped rigid-body impulse solver -- to run a real
+        ;; conductor/crimp tensile-pull-test simulation (the honest
+        ;; "collision-as-tension-limit" reinterpretation technique this
+        ;; fleet's isic-2930 auto-parts actor established for a
+        ;; PULL/SEPARATION-style test on a collision-only engine), instead
+        ;; of comparing static self-reported fields. This vertical has no
+        ;; design-library sibling repo, so the physics module is built
+        ;; directly in harnessworks.robotics and the ONLY new dependency is
+        ;; physics-2d itself.
+        io.github.kotoba-lang/physics-2d
+        {:git/url "https://github.com/kotoba-lang/physics-2d.git"
+         :sha "03b6c23c8d9aa36b92a8130fd3e37fc2548b4d26"}}
+ :aliases
+ {;; offline workspace dev -- pin transitive langchain to local checkout
+  :dev {:override-deps
+        {io.github.kotoba-lang/langchain
+         {:local/root "../../kotoba-lang/langchain"}}}
+  ;; clojure -M:dev:run  -> drive the demo through one OperationActor
+  :run {:main-opts ["-m" "harnessworks.sim"]}
+  :export {:main-opts ["-m" "harnessworks.export-run"]}
+  :test {:extra-paths ["test"]
+         :extra-deps {io.github.cognitect-labs/test-runner
+                      {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+         :main-opts ["-m" "cognitect.test-runner"]
+         :exec-fn cognitect.test-runner.api/test}
+  ;; static analysis -- clj-kondo from deps (no binary), errors fail CI.
+  :lint {:replace-deps {clj-kondo/clj-kondo {:mvn/version "2024.11.14"}}
+         :main-opts    ["-m" "clj-kondo.main"
+                        "--lint" "src" "test"
+                        "--fail-level" "error"]}}}
