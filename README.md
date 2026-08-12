@@ -146,12 +146,34 @@ harness plant's own acts.
 
 Operator console (static sample): `docs/samples/operator-console.html`.
 
+It is **generated at build time from a real actor run**, never hand-written:
+
+```bash
+clojure -M:dev:render-html                 # -> docs/samples/operator-console.html
+clojure -M:dev:render-html /tmp/out.html   # or anywhere else
+```
+
+`harnessworks.render-html` seeds a real `harnessworks.store`, drives real
+operations through the real Cable-Integrity Governor and phase gate via
+`langgraph.graph/run*`, and renders only what came back — every batch figure,
+record id, rule name and hold reason on the page is actor output. Styling is
+`jp-go-dds` (デジタル庁デザインシステム) plus its console skin.
+
+Two properties are enforced rather than merely intended:
+
+- **build-time HARD-hold invariant** — the generator refuses to write the file
+  if the run's ledger contains zero `:governor-hold` facts, so the console can
+  never quietly degrade into a happy-path-only demo;
+- **determinism** — no timestamp, wall clock or random id enters the page, so
+  reruns from the same seed are byte-identical (`cmp` two runs).
+
 ## Develop
 
 ```bash
 clojure -M:dev:test
 clojure -M:lint
 clojure -M:dev:run
+clojure -M:dev:render-html
 ```
 
 ## License
