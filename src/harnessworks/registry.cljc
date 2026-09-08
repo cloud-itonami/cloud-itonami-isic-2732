@@ -33,7 +33,7 @@
   `harnessworks.operation`'s `:actuation/ship-cable-run-batch`/
   `:actuation/issue-harness-certificate`, always human-gated -- see
   README `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is the
@@ -85,7 +85,7 @@
     (throw (ex-info "cable-run-batch-shipment: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "cable-run-batch-shipment: sequence must be >= 0" {})))
-  (let [shipment-number (str (str/upper-case jurisdiction) "-SHP-" (zero-pad sequence 6))
+  (let [shipment-number (str (str/upper jurisdiction) "-SHP-" (zero-pad sequence 6))
         record {"record_id" shipment-number
                 "kind" "cable-run-batch-shipment-draft"
                 "batch_id" batch-id
@@ -110,7 +110,7 @@
     (throw (ex-info "harness-certificate: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "harness-certificate: sequence must be >= 0" {})))
-  (let [certificate-number (str (str/upper-case jurisdiction) "-HCERT-" (zero-pad sequence 6))
+  (let [certificate-number (str (str/upper jurisdiction) "-HCERT-" (zero-pad sequence 6))
         record {"record_id" certificate-number
                 "kind" "harness-certificate-draft"
                 "batch_id" batch-id
