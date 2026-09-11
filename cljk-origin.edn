@@ -1,0 +1,23 @@
+{:format :kotoba.cljk-origin/v1
+ :renamed-on "2026-09-11"
+ :decision "adr-2609111500-cljk-rename-all-clojure-source (com-junkawasaki/root 90-docs/adr; owner instruction 2026-09-11)"
+ :rule "value = the extension the file had before the rename. A path ending in .clj.cljk or .cljs.cljk kept it in the name because both platform files existed (or the plain target was taken)."
+ :origins
+ {"src/harnessworks/export.cljk" ".cljc"
+  "src/harnessworks/export_run.cljk" ".clj"
+  "src/harnessworks/facts.cljk" ".cljc"
+  "src/harnessworks/governor.cljk" ".cljc"
+  "src/harnessworks/harnessworksadvisor.cljk" ".cljc"
+  "src/harnessworks/operation.cljk" ".cljc"
+  "src/harnessworks/phase.cljk" ".cljc"
+  "src/harnessworks/registry.cljk" ".cljc"
+  "src/harnessworks/render_html.cljk" ".clj"
+  "src/harnessworks/robotics.cljk" ".cljc"
+  "src/harnessworks/sim.cljk" ".cljc"
+  "src/harnessworks/store.cljk" ".cljc"
+  "test/harnessworks/export_test.cljk" ".clj"
+  "test/harnessworks/facts_test.cljk" ".clj"
+  "test/harnessworks/governor_contract_test.cljk" ".clj"
+  "test/harnessworks/phase_test.cljk" ".clj"
+  "test/harnessworks/registry_test.cljk" ".clj"
+  "test/harnessworks/store_contract_test.cljk" ".clj"}}
