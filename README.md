@@ -149,8 +149,8 @@ Operator console (static sample): `docs/samples/operator-console.html`.
 It is **generated at build time from a real actor run**, never hand-written:
 
 ```bash
-clojure -M:dev:render-html                 # -> docs/samples/operator-console.html
-clojure -M:dev:render-html /tmp/out.html   # or anywhere else
+kbb -M:dev:render-html                 # -> docs/samples/operator-console.html
+kbb -M:dev:render-html /tmp/out.html   # or anywhere else
 ```
 
 `harnessworks.render-html` seeds a real `harnessworks.store`, drives real
@@ -170,10 +170,10 @@ Two properties are enforced rather than merely intended:
 ## Develop
 
 ```bash
-clojure -M:dev:test
-clojure -M:lint
-clojure -M:dev:run
-clojure -M:dev:render-html
+kbb -M:dev:test
+kbb -M:lint
+kbb -M:dev:run
+kbb -M:dev:render-html
 ```
 
 ## License
@@ -183,8 +183,8 @@ AGPL-3.0-or-later — see `LICENSE`.
 ## Export audit package (CLI)
 
 ```bash
-clojure -M:dev:export
-# or: clojure -M:dev:export /tmp/audit-2732
+kbb -M:dev:export
+# or: kbb -M:dev:export /tmp/audit-2732
 ```
 
 Writes CSV files under `out/audit-package/` (or the given directory).

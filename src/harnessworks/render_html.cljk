@@ -36,7 +36,7 @@
   a human at all -- so the HARD-hold requirement is enforced by the
   build, not by convention (precedent: cloud-itonami-isic-2513).
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [kotoba.lang.text :as str]
             [jp-go-dds.skin :as skin]
@@ -341,7 +341,7 @@
      (section
       "This run"
       (str "Generated at build time by <code>harnessworks.render-html</code> "
-           "(<code>clojure -M:dev:render-html</code>) from a real "
+           "(<code>kbb -M:dev:render-html</code>) from a real "
            "<code>harnessworks.operation</code> actor run — every figure below is "
            "actor output, none of it is written into this page by hand. "
            "Rollout phase <strong>" phase/default-phase " (" (esc phase-label)
@@ -424,7 +424,7 @@
 
      "</main>\n"
      "<footer>\n"
-     "  <p>Regenerate with <code>clojure -M:dev:render-html</code>. Deterministic: "
+     "  <p>Regenerate with <code>kbb -M:dev:render-html</code>. Deterministic: "
      "the advisor is the deterministic mock, the pull-test telemetry is "
      "<code>harnessworks.robotics</code>' <code>physics-2d</code> simulation, and no "
      "timestamp or random id enters the page — reruns from the same seed are "
