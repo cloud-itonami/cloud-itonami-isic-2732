@@ -1,5 +1,5 @@
 (ns harnessworks.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean cable-run batch
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean cable-run batch
   through intake -> harness-standard-rules evidence verification ->
   end-of-line-defect screening -> robot continuity/tensile-pull/
   insulation-resistance mission -> cable-run-batch-shipment proposal
