@@ -1,0 +1,40 @@
+(ns harnessworks.physics-probe-test
+  "The probe is the bot's only source of \"measured\"; these pin that it
+  measures (every run numeric, count = expected), that the numbers come
+  from the simulation (the derived boundary really straddles the pull-force
+  floor), and that a changed solver would show."
+  (:require [clojure.test :refer [deftest is testing]]
+            [harnessworks.physics-probe :as probe]
+            [harnessworks.robotics :as robotics]))
+
+(deftest probe-measures-every-run
+  (let [p (probe/probe)]
+    (is (= "itonami.physical-ai.probe.v1" (:physics-probe/schema p)))
+    (is (pos? (:count p)))
+    (is (= (:count p) (:expected p) (count (:runs p))))
+    (testing "every run carries a numeric force and tick count from the trajectory"
+      (doseq [r (:runs p)]
+        (is (number? (get-in r [:quantities :sim-peak-pull-force-n])))
+        (is (pos? (get-in r [:quantities :ticks])))))))
+
+(deftest force-rises-with-mass-across-the-sweep
+  (let [forces (map #(get-in % [:quantities :sim-peak-pull-force-n]) (:runs (probe/probe)))]
+    (is (apply < forces))))
+
+(deftest seeded-fixtures-land-on-both-sides-of-the-floor
+  (let [by-mass (into {} (map (juxt #(get-in % [:input :crimp-effective-mass-kg]) identity))
+                      (:runs (probe/probe)))]
+    (is (true? (:out-of-tolerance? (get by-mass 0.03))))
+    (is (false? (:out-of-tolerance? (get by-mass 0.10))))))
+
+(deftest derived-boundary-straddles-the-floor
+  (let [m (probe/min-passing-crimp-mass-kg)
+        force (fn [kg] (:sim-peak-pull-force-n
+                        (robotics/pull-test-telemetry-for {:crimp-effective-mass-kg kg})))]
+    (is (number? m))
+    (testing "at the boundary the force reaches the floor; 1% lighter it does not"
+      (is (>= (force m) robotics/min-pull-force-n))
+      (is (< (force (* 0.99 m)) robotics/min-pull-force-n)))))
+
+(deftest bracket-that-does-not-straddle-answers-nil
+  (is (nil? (probe/min-passing-crimp-mass-kg 0.5 1.0 10))))
