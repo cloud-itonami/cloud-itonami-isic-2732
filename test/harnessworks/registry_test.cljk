@@ -1,5 +1,5 @@
 (ns harnessworks.registry-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [harnessworks.registry :as r]))
 
 ;; ----------------------------- cable-run-batch-resistance-out-of-range? -----------------------------

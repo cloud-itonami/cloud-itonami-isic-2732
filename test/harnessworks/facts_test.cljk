@@ -1,5 +1,5 @@
 (ns harnessworks.facts-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [harnessworks.facts :as facts]))
 
 (deftest auto-has-a-spec-basis
